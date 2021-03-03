@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type = "text/javascript" src ="https://www.gstatic.com/charts/loader.js"> </script>
+    <script type = "text/javascript">
+
+    // loading all the google charts
+    google.charts.load('current',{'packages':['corechart','geochart'],'mapsApiKey': 'AIzaSyD8vKZoJaJKXEbKKyhYQmL859iEKelTZk4'});
+
+    //load the callback function that runs when the page loads
+    google.charts.setOnLoadCallback(drawAllSheets);
+    google.charts.setOnLoadCallback(Education_Growth_Chart);
+    google.charts.setOnLoadCallback(Healthcare_Growth_Chart);
+
+
+    function drawAllSheets(){
+        drawSheetName('Total_military_spending_million','SELECT A,B,C,D,E,F,G',
+        Total_military_spending_millionResponseHandler);
+
+        drawSheetName('totalHealthcare_spending_mil','SELECT A,B,C,D,E,F,G',
+        totalHealthcare_spending_milResponseHandler);
+
+        drawSheetName('totalEducation_spending_million','SELECT A,B,C,D,E,F,G',
+        totalEducation_spending_millionResponseHandler);
+
+        drawSheetName('Military_spending_GDP','SELECT A,G,N',
+        Military_spending_GDPResponseHandler);
+
+        drawSheetName('Education_spending_GDP','SELECT A,G,N',
+        Education_spending_GDPResponseHandler);
+
+        drawSheetName('Healthcare_spending_GDP','SELECT A,G,N',
+        Healthcare_spending_GDPResponseHandler);
+
+        drawSheetName('Education_military_spending_comparison','SELECT A,G,N',
+        Edu_mil_comparisonResponseHandler);
+
+        drawSheetName('Health_military_spending_comparison','SELECT A,G,N',
+        Health_mil_comparisonResponseHandler);
+
+        drawSheetName('Military_GDP_per_person','SELECT A,G,N',
+        Military_GDP_per_personResponseHandler);
+
+        drawSheetName('Health_GDP_per_person','SELECT A,G,N',
+        Health_GDP_per_personResponseHandler);
+
+        drawSheetName('Education_GDP_person','SELECT A,G,N',
+        Education_GDP_personResponseHandler);
+
+        drawSheetName('totalEducation_spending_million','SELECT A,I',
+        EducationPerGrowthResponseHandler);
+
+        drawSheetName('totalHealthcare_spending_mil','SELECT A,I',
+        HealthcarePerGrowthResponseHandler);
+        
+        drawSheetName('GDP_mil_allcountries','SELECT K,T',
+        GDP_MEAN_MillionResponseHandler);
+
+        drawSheetName('Total_military_spending_million','SELECT A,J',
+        Military_percent_contriResponseHandler);
+
+        drawSheetName('totalEducation_spending_million','SELECT A,J',
+        Education_percent_contriResponseHandler);
+
+        drawSheetName('totalHealthcare_spending_mil','SELECT A,J',
+        Healthcare_percent_contriResponseHandler);
+
+    }// draw all sheets
+
+
+    function drawSheetName(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+	           
+               'https://docs.google.com/spreadsheets/d/1uJf8TRjFdzivyLMWQZlTm5ujHL9mbUTfRABPkLvn7Cs/gviz/tq?sheet='
+			   + sheetName + '&headers=1&tq=' + queryString);
+	       query.send(responseHandler);
+	} //drawSheetName
+
+    
+	
+	//Function end
+
+    //Using column chart to depict the Military expenditure of the top 10 G20 nations from 2012-2017
+
+    function Total_military_spending_millionResponseHandler(response) {Total_military_spending_millionResponseHandler
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			title: 'Total Military Spending of top 10 G20 Nation, 2012-2017',
+			hAxis: {title: 'Country'},
+			vAxis: {title: 'Spending in Millions USD ($)'}
+		};
+			
+		var chart = new google.visualization.ColumnChart(
+			document.getElementById('Military_total_div'));
+		
+		chart.draw(data, options);
+		} //Total Military Spending 2012 - 2017
+
+        // Healthcare expenditure
+        function totalHealthcare_spending_milResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			annotations: {alwaysOutside: true},
+			title: 'Total healthcare Spending of top 10 G20 Nation, 2012-2017',
+			hAxis: {title: 'Country'},
+			vAxis: {title: 'Spending in Millions USD ($)'}
+		};
+			
+		var chart = new google.visualization.ColumnChart(
+			document.getElementById('Health_total_div'));
+		
+		chart.draw(data, options);
+		} //Total Healthcare Spending 2012 - 2017    
+
+        // Education expenditure
+        function totalEducation_spending_millionResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 2, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			annotations: {alwaysOutside: true},
+			title: 'Total Education Spending of top 10 G20 Nation, 2012-2017',
+			hAxis: {title: 'Country'},
+			vAxis: {title: 'Spending in Millions USD ($)'}
+		};
+			
+		var chart = new google.visualization.ColumnChart(
+			document.getElementById('Education_total_div'));
+		
+		chart.draw(data, options);
+		} //Total Education Spending 2012 - 2017   
+
+        // Military spending vs GDP 2012-2017
+        function Military_spending_GDPResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			colors:['#FFDE03','#0336FF'],
+			isStacked: true,
+			annotations: {alwaysOutside: true},
+			title: 'Military Vs GDP, 2017',
+			vAxis: {title: 'Country'},
+			hAxis: {title: 'Spending in Millions USD ($)'}
+		};
+			
+		var chart = new google.visualization.BarChart(
+			document.getElementById('MilitaryGDP_div'));
+		
+		chart.draw(data, options);
+		} //Military Spending Vs GDP in 2017
+
+
+        // Education spending vs GDP 2012-2017
+        function Education_spending_GDPResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			colors:['#FFDE03','#0336FF'],
+			isStacked: true,
+			annotations: {alwaysOutside: true},
+			title: 'Education Vs GDP, 2017',
+			vAxis: {title: 'Country'},
+			hAxis: {title: 'Spending in Millions USD ($)'}
+		};
+			
+		var chart = new google.visualization.BarChart(
+			document.getElementById('EducationGDP_div'));
+		
+		chart.draw(data, options);
+		} //Education Spending Vs GDP in 2017
+
+
+        // Heath spending vs GDP 2012-2017
+        function Healthcare_spending_GDPResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			colors:['#FFDE03','#0336FF'],
+			isStacked: true,
+			annotations: {alwaysOutside: true},
+			title: 'Healthcare Vs GDP, 2017',
+			vAxis: {title: 'Country'},
+			hAxis: {title: 'Spending in Millions USD ($)'}
+		};
+
+        
+		var chart = new google.visualization.BarChart(
+			document.getElementById('HealthGDP_div'));
+		
+		chart.draw(data, options);
+		} //Healthcare Spending Vs GDP in 2017
+
+        //  Education and Military Comparison 2017
+        function Edu_mil_comparisonResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			colors:['#FFDE03','#0336FF'],
+			isStacked: true,
+			annotations: {alwaysOutside: true},
+			title: 'Education Vs military, 2017',
+			vAxis: {title: 'Country'},
+			hAxis: {title: 'Spending in Millions USD ($)'}
+		};
+
+        
+		var chart = new google.visualization.BarChart(
+			document.getElementById('Edu_mil_div'));
+		
+		chart.draw(data, options);
+		} //Education and Military Comparison 2017
+
+        //  Healthcare and Military Comparison 2017
+        function Health_mil_comparisonResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			colors:['#FFDE03','#0336FF'],
+			isStacked: true,
+			annotations: {alwaysOutside: true},
+			title: 'Healthcare Vs military, 2017',
+			vAxis: {title: 'Country'},
+			hAxis: {title: 'Spending in Millions USD ($)'}
+		};
+
+        
+		var chart = new google.visualization.BarChart(
+			document.getElementById('Health_mil_div'));
+		
+		chart.draw(data, options);
+		} //Healthcare and Military Comparison 2017
+
+        //  Military expenduture per person vs gdp per person Comparison 2017
+        function Military_GDP_per_personResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			colors:['#FFDE03','#0336FF'],
+			isStacked: true,
+			annotations: {alwaysOutside: true},
+			title: 'Military spending per person vs GDP per person, 2017',
+			vAxis: {title: 'Country'},
+			hAxis: {title: 'Spending in Millions USD ($)'}
+		};
+
+        
+		var chart = new google.visualization.BarChart(
+			document.getElementById('mil_gdp_perperson_div'));
+		
+		chart.draw(data, options);
+		} // Military expenduture per person vs gdp per person Comparison 2017
+
+
+        //  Education expenduture per person vs gdp per person Comparison 2017
+        function Education_GDP_personResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			colors:['#FFDE03','#0336FF'],
+			isStacked: true,
+			annotations: {alwaysOutside: true},
+			title: 'Education spending per person vs GDP per person, 2017',
+			vAxis: {title: 'Country'},
+			hAxis: {title: 'Spending in Millions USD ($)'}
+		};
+
+        
+		var chart = new google.visualization.BarChart(
+			document.getElementById('edu_gdp_perperson_div'));
+		
+		chart.draw(data, options);
+		} // Education expenduture per person vs gdp per person Comparison 2017
+
+        //  Health expenduture per person vs gdp per person Comparison 2017
+        function Health_GDP_per_personResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column: 1, desc: true});
+			
+		var options = {
+			height: 500,
+			bars: 'horizontal',
+			colors:['#FFDE03','#0336FF'],
+			isStacked: true,
+			annotations: {alwaysOutside: true},
+			title: 'Healthcare spending per person vs GDP per person, 2017',
+			vAxis: {title: 'Country'},
+			hAxis: {title: 'Spending in Millions USD ($)'}
+		};
+
+        
+		var chart = new google.visualization.BarChart(
+			document.getElementById('health_gdp_perperson_div'));
+		
+		chart.draw(data, options);
+		} // Health expenduture per person vs gdp per person Comparison 2017
+
+        // Education growth in year 2012 vs growth in year 2017 as fixed amount in Million
+        function Education_Growth_Chart() {
+            var year_2012 = google.visualization.arrayToDataTable([
+            ['Country', 'Education Spending 2012'],
+            ['China', 187752.8011],
+            ['France', 29187.3],
+            ['Germany', 174836],
+            ['India',  70683.9],
+            ['Italy', 84652.3],
+            ['Japan',  229039],
+            ['Russia',  83762.9],
+            ['Saudi Arabia', 144339],
+            ['UK', 165141],
+            ['USA', 793164.668]
+            ]);
+
+
+            var year_2017 = google.visualization.arrayToDataTable([
+            ['Country', 'Education Spending 2017'],
+            ['China', 248521],
+            ['France', 35156.5],
+            ['Germany', 180636],
+            ['India',  68111],
+            ['Italy', 79353.5],
+            ['Japan',  154872],
+            ['Russia', 73828.6],
+            ['Saudi Arabia', 130424],
+            ['UK', 145099],
+            ['USA', 916042]
+            ]);
+
+            var ChartDiff = new google.visualization.BarChart(document.getElementById('education_difference_div'));
+
+            var options = { legend: { position: 'top' } };
+
+            var diffData = ChartDiff.computeDiff(year_2012, year_2017);
+            ChartDiff.draw(diffData, options);
+        }
+
+        // Healtcare growth in year 2012 vs growth in year 2017 as fixed amount in Million
+        function Healthcare_Growth_Chart() {
+            var year_2012 = google.visualization.arrayToDataTable([
+            ['Country', 'Healthcare Spending 2012'],
+            ['China',380460 ],
+            ['France',305391 ],
+            ['Germany', 383056],
+            ['India', 61955.3],
+            ['Italy', 183758],
+            ['Japan', 665226],
+            ['Russia',108410 ],
+            ['Saudi Arabia', 29583.8],
+            ['UK',272767],
+            ['USA', 2635940]
+            ]);
+
+            var year_2017 = google.visualization.arrayToDataTable([
+            ['Country', 'Healthcare Spending 2017'],
+            ['China', 606211],
+            ['France', 295842],
+            ['Germany',417639 ],
+            ['India',  92795.9],
+            ['Italy', 170091],
+            ['Japan', 522489 ],
+            ['Russia',83760.7],
+            ['Saudi Arabia',48223.5],
+            ['UK', 262823],
+            ['USA', 3317980]
+            ]);
+            
+            var HealthcareChartDiff = new google.visualization.BarChart(document.getElementById('healthcare_difference_div'));
+
+            var options = { legend: { position: 'top' } };
+
+            var diffData = HealthcareChartDiff.computeDiff(year_2012, year_2017);
+            HealthcareChartDiff.draw(diffData, options);
+        }
+
+        // Education growth in percentage for year 2012 and 2017
+        function EducationPerGrowthResponseHandler(response){
+            //get the data
+            var data = response.getDataTable();
+            var view = new google.visualization.DataView(data);
+            
+            //creating a view for percent growth
+            view.setColumns([0, 1, {
+                calc: function(dt, row){
+                    return Math.floor(dt.getFormattedValue(row, 1)) + '%';
+                },
+                sourceColumn: 1,
+                type: 'string',
+                role: 'annotation'
+            }]);
+
+            var options = {
+                title: 'Education',
+                width: 1000,
+                height: 400,
+                bar: { groupWidth: '40%' },
+            };
+        
+            //create the chart and draw it
+            var chart8 = new google.visualization.BarChart(document.getElementById('Edu_growth_per_div'));
+            chart8.draw(view, options);
+        }
+
+        // Healthcare growth in percentage for year 2012 and 2017
+        function HealthcarePerGrowthResponseHandler(response){
+            //get the data
+            var data = response.getDataTable();
+            var view = new google.visualization.DataView(data);
+            
+            //creating a view for percent growth
+            view.setColumns([0, 1, {
+                calc: function(dt, row){
+                    return Math.floor(dt.getFormattedValue(row, 1)) + '%';
+                },
+                sourceColumn: 1,
+                type: 'string',
+                role: 'annotation'
+            }]);
+
+            var options = {
+                title:'Healthcare',
+                width: 1000,
+                height: 400,
+                bar: { groupWidth: '40%' },
+            };
+        
+            //create the chart and draw it
+            var chart8 = new google.visualization.BarChart(document.getElementById('healthcare_growth_per_div'));
+            chart8.draw(view, options);
+        }
+
+
+
+        // Mean of GDP across selected countries from years 2012-2017
+        function GDP_MEAN_MillionResponseHandler(response){
+            //get the data
+            var data = response.getDataTable();
+            var view = new google.visualization.DataView(data);
+            
+            var options = {
+			height: 500,
+			colors:['#32a0a8','#3263a8','#7b32a8','#324ea8'],
+			title: 'Mean of GDP for years 2012-2017',
+            region:'world',
+		};
+        
+            //create the chart and draw it
+            var meangdp= new google.visualization.GeoChart(document.getElementById('mean_gdp_Million_div'));
+            meangdp.draw(view, options);
+        }
+
+        // Contribution of Military expenditure of all selected countries of 2017
+        function Military_percent_contriResponseHandler(response){
+            //get the data
+            var data = response.getDataTable();
+            var view = new google.visualization.DataView(data);
+            
+            var options = {
+            height: 500,
+            title: 'Contribution of Military expenditure in 2017',
+            is3D: true,
+        };
+        
+            //create the chart and draw it
+            var Military_perc= new google.visualization.PieChart(document.getElementById('Military_percent_contri_div'));
+            Military_perc.draw(view, options);
+        }
+
+        // Contribution of Education expenditure of all selected countries of 2017
+        function Education_percent_contriResponseHandler(response){
+            //get the data
+            var data = response.getDataTable();
+            var view = new google.visualization.DataView(data);
+            
+            var options = {
+            height: 500,
+            title: 'Contribution of Education expenditure in 2017',
+            is3D: true,
+        };
+        
+            //create the chart and draw it
+            var Military_perc= new google.visualization.PieChart(document.getElementById('Education_percent_contri_div'));
+            Military_perc.draw(view, options);
+        }
+
+
+        // Contribution of Healthcare expenditure of all selected countries of 2017
+        function Healthcare_percent_contriResponseHandler(response){
+            //get the data
+            var data = response.getDataTable();
+            var view = new google.visualization.DataView(data);
+            
+            var options = {
+            height: 500,
+            title: 'Contribution of Healthcare expenditure in 2017',
+            is3D: true,
+        };
+        
+            //create the chart and draw it
+            var Military_perc= new google.visualization.PieChart(document.getElementById('Healthcare_percent_contri_div'));
+            Military_perc.draw(view, options);
+        }
+    
+    </script>
+</head> 
+<body>
+    <table style="margin: 0px; padding: 0px;"> 
+        <tr style="margin: auto; padding: auto;">
+            <td style="width: auto; text-align: center; margin: auto; padding: auto;">
+                <img src="G20_image.jpg" alt="G20" style="width: 450px; height: 200px; text-align: left; margin: 0px; padding: 0px;">
+            </td>
+            <td>
+                <h1 style="color:black; text-align:center;">  Visualization of Complex Data Individual Project 1 </h1>      
+                <h2 style="color: black; text-align:center; "> Education, Healthcare, and Military Spending of 10 Nations</h2>
+                <h3 style="color:black; text-align:center; "> Rohan Thekananth, 2021</h3>
+            </td>
+            <td style="width: auto; text-align: center; margin: auto; padding: auto;">
+                <img src="G20_image.jpg" alt="G20" style="width: 450px; height: 200px; text-align: left; margin: 0px; padding: 0px;">
+            </td>
+        
+        </tr>
+        
+    </table>   
+
+    <h2 style="background-color: white; text-align: left;"> (1) COMPARE THE EDUCATIONAL, HEALTHCARE, AND MILITARY SPENDING DATA OF YEARS 2012-2017</h2> 
+	
+    <table>
+        <tr>
+        <td><div id="Military_total_div" style="width: 540px; height: 500px"></div></td>
+        <td><div id="Health_total_div" style="width: 500px; height: 500px"></div></td>
+        <td><div id="Education_total_div" style="width: 490px; height: 500px"></div></td>
+        </tr>      
+    </table>
+
+    <h3 style='color:black;text-align:left;'>Conclusion: We can see that USA is the highest spender in all 3 categories
+        i.e. Military, Health, and Education. Another intersting point to see is that USA does not increase its expenditure year on year on military 
+        as compared to the other 2 categories.
+    </h3>
+
+    <h2 style="background-color: white; text-align: left;">MEAN GDP OF YEARS 2012-2017 </h2> 
+    <table>
+        <tr>
+            <td><div id="mean_gdp_Million_div" style="width: 1500px; height: 500px"></div></td>
+        </tr>       
+    </table>
+    <h3>
+        Conclusion: USA has the highest mean GDP from 2012-2017 followed by China.
+    </h3>
+
+
+    <table>
+        <tr><h2 style="background: white; text-align: left;">(2) COMPARE THE SPENDING DATA TO THAT COUNTRY'S GDP</h2></tr>
+        <tr>
+            <td><div id="MilitaryGDP_div" style="width:700px; height: 500px"></div></td>
+            <td><div id="EducationGDP_div" style="width:700px; height: 500px"></div></td>
+        </tr>
+    </table>
+
+    <table>
+        <td><div id="HealthGDP_div" style="width:700px; height: 500px"></div></td>
+    </table>    
+     
+    <h3>
+        Conclusion: USA seems to be the highest spender in military & education as compared to its GDP. For Healthcare, 
+        USA is again ahead of the rest of the countries. The other countries like China, Japan, Germany, France & UK seem to 
+        be spending about the same amount as compared to their GDP. 
+    </h3>
+    <table>
+        <tr><h2 style="background: white; text-align: left;">(3)COMPARE EDUCATION AND HEALTH TO OVERALL SPENDING TO MILITARY SPENDING OF THE COUNTRY</h2></tr>
+        <td><div id ='Edu_mil_div' style='width:700px; height:500px'></div></td>
+        <td><div id ='Health_mil_div' style='width:700px; height:500px'></div></td>
+        <td></td>
+    </table>
+
+    <h3>
+        Conclusion: All the shown countries are focussing more on Education and Healthcare as compared to Military.
+         
+    </h3>
+
+    <table>
+        <tr><h2 style='background:white; text-align: left;'>(4)COMPARE PER PERSON MILITARY,HEALTHCARE & EDUCATION TO THE PER PERSON GDP</h2></tr>
+        <td><div id="mil_gdp_perperson_div" style='width:700px; height:500px'></div></td>
+        <td><div id="edu_gdp_perperson_div" style='width:700px; height:500px'></div></td>
+    </table>
+
+    <table>
+        <td><div id="health_gdp_perperson_div" style='width:700px; height:500px'></div></td>
+    </table>    
+
+    <h3>
+        Conclusion: All the mentioned countries are spending the most per person on Healthcare followed by Education and Military.Saudi Arabia spends the highest
+        amount when we look at per person military expenditure. USA leads in Education & Healthcare
+    </h3>
+
+    <table style="margin: 0px; padding: 0px;">
+        <h2 style='background: white; text-align: left;'> (5)FASTEST GROWING COUNTRIES IN HEALTHCARE AND EDUCATION SPENDING IN FIXED VALUE (2012 vs 2017)</h2>
+        <td><div id ="education_difference_div" style='width:700px; height:500px'></div></td>
+        <td><div id ="healthcare_difference_div" style='width:700px; height:500px'></div></td>
+    </table>
+
+    <table style="margin: 0px; padding: 0px; border:0px;">
+        <h2 style='background: white; text-align: left;'>(5)FASTEST GROWING COUNTRIES IN HEALTHCARE AND EDUCATION SPENDING IN PERCENTAGE (2012 vs 2017)</h2>
+        <td><div id ="Edu_growth_per_div" style='width:1000px; height:400px'></div></td>       
+    </table>
+
+    <table style="margin: 0px; padding: 0px; border:0px;">
+        <td><div id ="healthcare_growth_per_div" style='width:1000px; height:400px'></div></td>
+    </table>
+    <h3>
+        Conclusion: China has the highest change in Education growth followed by France and then USA. For Healthcare we can see that 
+        China, India & Saudi Arabia have been investing alot in this area and the change is significantly higher in 2017 as compared to 2012.
+    </h3>
+
+    <table>
+        <h2 style='background: white; text-align: left;'>(6) CONTRIBUTION OF MILITARY,EDUCATION, AND HEALTHCARE EXPENDITURE AMONG COUNTRIES IN 2017</h2>
+        <td><div id='Military_percent_contri_div'style='width:500px; height:500px'></div></td>
+        <td><div id='Education_percent_contri_div'style='width:500px; height:500px'></div></td>
+        <td><div id='Healthcare_percent_contri_div'style='width:500px; height:500px'></div></td>
+    </table>
+    <h3>
+        Conclusion: Among the top 10 countries selected, USA and China are the highest contributors in all the 3 areas i.e. Military, Education & Healthcare.
+    </h3>
+</body>
+
+
+</html>
